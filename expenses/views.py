@@ -18,7 +18,7 @@ def apply_filters(queryset, f):
     if f["date_to"]:
         queryset = queryset.filter(spent_on__lte=f["date_to"])
     if f["q"].strip():
-        # icontains escapes % and _ for us, so they match literally.
+        #Case-insensitive partial title search.
         queryset = queryset.filter(title__icontains=f["q"].strip())
     return queryset
 
