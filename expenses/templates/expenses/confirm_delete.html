@@ -1,0 +1,16 @@
+{% extends "expenses/base.html" %}
+{% block title %}Delete expense{% endblock %}
+{% block content %}
+  <h1>Expense Tracker</h1>
+  <section>
+    <h2>Delete this expense?</h2>
+    <p><strong>{{ expense.title }}</strong><br>
+       ₹{{ expense.amount|floatformat:2 }} · {{ expense.get_category_display }} · {{ expense.spent_on|date:"d M Y" }}</p>
+    <p class="muted">This can't be undone.</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="danger">Delete expense</button>
+      <a class="btn" href="{% url 'expense_list' %}">Cancel</a>
+    </form>
+  </section>
+{% endblock %}

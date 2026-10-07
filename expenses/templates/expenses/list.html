@@ -1,0 +1,60 @@
+{% extends "expenses/base.html" %}
+{% block content %}
+  <h1>Expense Tracker</h1>
+
+  <section>
+    <h2>Add expense</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="grid">
+        {% for f in form %}
+          <div class="field{% if f.name == 'note' %} wide{% endif %}">{{ f.label_tag }}{{ f }}{{ f.errors }}</div>
+        {% endfor %}
+      </div>
+      <button type="submit">Add expense</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>This month: {{ month_label }}</h2>
+    <div class="total">₹{{ summary.total|floatformat:2 }}</div>
+    {% for row in summary.rows %}
+      <div class="cat-row">
+        <span>{{ row.label }} ({{ row.count }})</span>
+        <div class="bar" style="width:{{ row.pct|stringformat:'.1f' }}%"></div>
+        <span>₹{{ row.total|floatformat:2 }}</span>
+      </div>
+    {% empty %}
+      <p class="empty">No expenses recorded this month yet.</p>
+    {% endfor %}
+  </section>
+
+  <section>
+    <h2>Expenses</h2>
+    <form method="get">
+      {{ filter_form.non_field_errors }}
+      <div class="grid">
+        {% for f in filter_form %}<div class="field">{{ f.label_tag }}{{ f }}{{ f.errors }}</div>{% endfor %}
+        <div><button type="submit">Apply filters</button> <a class="btn" href="{% url 'expense_list' %}">Clear</a></div>
+      </div>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Title</th><th>Category</th><th class="amt">Amount</th><th>Note</th><th></th></tr></thead>
+        <tbody>
+        {% for e in expenses %}
+          <tr>
+            <td>{{ e.spent_on|date:"d M Y" }}</td><td>{{ e.title }}</td><td>{{ e.get_category_display }}</td>
+            <td class="amt">₹{{ e.amount|floatformat:2 }}</td><td class="muted">{{ e.note|linebreaksbr }}</td>
+            <td class="actions"><a href="{% url 'expense_edit' e.pk %}">Edit</a><a class="danger" href="{% url 'expense_delete' e.pk %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if not expenses and not filter_form.errors %}
+      <p class="empty">{% if is_filtered %}No expenses match these filters.{% else %}No expenses yet. Add your first one above.{% endif %}</p>
+    {% endif %}
+  </section>
+{% endblock %}
