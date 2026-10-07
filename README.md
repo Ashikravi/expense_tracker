@@ -8,7 +8,8 @@ Requires Python 3.10+.
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate        # Windows: 
+source .venv\Scripts\activate    #Mac
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
