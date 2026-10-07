@@ -1,6 +1,6 @@
 # Expense Tracker (Django)
 
-A small personal expense tracker: add expenses, browse and filter them, and see this month's spending by category. Django + SQLite, server-rendered with plain HTML templates and no JavaScript needed.
+A small personal expense tracker: add expenses, browse and filter them, and see this month's spending by category. Django + SQLite, server-rendered with plain HTML templates.
 
 ## How to run
 
